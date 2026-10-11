@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512mm"
+   height="512mm"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.36283863"
+     inkscape:cx="405.13878"
+     inkscape:cy="658.69502"
+     inkscape:window-width="2560"
+     inkscape:window-height="1563"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer3" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect19"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     transform="matrix(0.77999977,0,0,0.77999977,107.54311,96.794636)"
+     sodipodi:insensitive="true">
+    <circle
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.264583;paint-order:stroke fill markers"
+       id="path2"
+       cx="189.33115"
+       cy="203.11122"
+       r="304.80719" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 1"
+     transform="translate(2.1114386e-6)">
+    <text
+       xml:space="preserve"
+       style="font-size:158.75px;line-height:0;font-family:Aquire;-inkscape-font-specification:Aquire;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke:#ffffff;stroke-width:0.264583;paint-order:stroke fill markers"
+       x="39.741611"
+       y="303.71341"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-size:158.75px;line-height:0;fill:#000000;stroke-width:0.264583"
+         x="39.741611"
+         y="303.71341">KOJIN</tspan></text>
+  </g>
+</svg>

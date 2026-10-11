@@ -38,11 +38,11 @@ a:focus-visible,summary:focus-visible {
 }
 
 header {
-  height:98px;
+  min-height:122px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 5.5%;
+  padding:12px 5.5%;
   border-bottom:1px solid var(--line);
   gap:24px
 }
@@ -62,6 +62,19 @@ header {
   font-size:10px;
   letter-spacing:1.7px;
   font-weight:600
+}
+
+/* The full logo keeps its proportions while the text remains easy to read. */
+.brand--logo {
+  flex-shrink:0;
+  gap:16px
+}
+
+.brand-logo {
+  display:block;
+  width:104px;
+  height:auto;
+  flex-shrink:0
 }
 
 .brand-mark {
@@ -831,9 +844,13 @@ footer p {
   }
   nav {
     width:100%;
+    flex-wrap:wrap;
     justify-content:center;
     gap:20px;
     font-size:12px
+  }
+  .brand-logo {
+    width:88px
   }
   .hero {
     grid-template-columns:1fr;
@@ -1004,4 +1021,3 @@ footer p {
     scroll-behavior:auto
   }
 }
-

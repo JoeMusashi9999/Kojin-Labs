@@ -52,6 +52,9 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: Restore runner ownership of build output
+        # The Jekyll Docker action creates root-owned output directories.
+        run: sudo chown -R "$(id -u):$(id -g)" _site
       - name: Copy archive snapshots without Jekyll processing
         run: |
           rm -rf _site/archive-content

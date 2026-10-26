@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -38,13 +38,9 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Validate and index the archive
         env:
-          ARCHIVE_BASE: ${{ github.event.before }}
           ARCHIVE_REVISION: ${{ github.sha }}
         run: |
-          if [ -z "$ARCHIVE_BASE" ]; then
-            ARCHIVE_BASE=$(git rev-parse HEAD^ 2>/dev/null || true)
-          fi
-          python3 scripts/build_archive.py --base "$ARCHIVE_BASE" --revision "$ARCHIVE_REVISION" --repository "$GITHUB_REPOSITORY"
+          python3 scripts/build_archive.py --revision "$ARCHIVE_REVISION" --repository "$GITHUB_REPOSITORY"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll

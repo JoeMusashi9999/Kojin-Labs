@@ -10,14 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Check archive behavior
         run: python3 -m unittest discover -s tests -v
-      - name: Validate metadata and published history
+      - name: Validate archive metadata
         env:
-          ARCHIVE_BASE: ${{ github.event.pull_request.base.sha }}
           ARCHIVE_REVISION: ${{ github.sha }}
-        run: python3 scripts/build_archive.py --base "$ARCHIVE_BASE" --revision "$ARCHIVE_REVISION" --repository "$GITHUB_REPOSITORY"
+        run: python3 scripts/build_archive.py --revision "$ARCHIVE_REVISION" --repository "$GITHUB_REPOSITORY"

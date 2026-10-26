@@ -1,0 +1,13 @@
+USING THE KOJIN LABS ARCHIVE
+
+This is an instructional entry added during archive setup, not a research result.
+
+Browse the project sections without opening folders. Search by title, description, researcher, tag, or filename. Select a record to see its metadata and preview.
+
+PDFs, images, and text files preview directly. Download Excel, Word, and PowerPoint originals, or include a separate PDF preview alongside them.
+
+Contributors add files only under archive-content/. Each file has a matching .meta.json sidecar. For example, experiment.xlsx has experiment.xlsx.meta.json.
+
+Published entries are append-only. For a correction, add a new file and metadata with a new id and a supersedes field referring to the earlier record. Both versions remain visible.
+
+The archive is public and read-only for visitors. GitHub collaborators control publication through commits and pull requests. See docs/archive.md in the repository for the full contributor guide.

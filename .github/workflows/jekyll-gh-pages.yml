@@ -28,6 +28,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check archive behavior
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate and index the archive
+        env:
+          ARCHIVE_BASE: ${{ github.event.before }}
+          ARCHIVE_REVISION: ${{ github.sha }}
+        run: |
+          if [ -z "$ARCHIVE_BASE" ]; then
+            ARCHIVE_BASE=$(git rev-parse HEAD^ 2>/dev/null || true)
+          fi
+          python3 scripts/build_archive.py --base "$ARCHIVE_BASE" --revision "$ARCHIVE_REVISION" --repository "$GITHUB_REPOSITORY"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
@@ -35,6 +52,11 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: Copy archive snapshots without Jekyll processing
+        run: |
+          rm -rf _site/archive-content
+          cp -R archive-content _site/archive-content
+          cp archive/manifest.json _site/archive/manifest.json
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 

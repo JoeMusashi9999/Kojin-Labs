@@ -1,1 +1,12 @@
-
+{
+  "id": "research-presentation",
+  "title": "Research Presentation",
+  "created": "2026-22-26",
+  "description": "Project proposal presentation givern on targeting indoor aldehyde exposure to mitigate cancer risk in urban populations.",
+  "researchers": ["Derek Borden", "Aegean Yang", "Joanna Yu"],
+  "tags": [
+    "project proposal",
+    "presentation",
+    "indoor air quality"
+  ]
+}

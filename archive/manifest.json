@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "revision": null,
+  "sections": [
+    {
+      "id": "00-project-overview",
+      "title": "Project overview",
+      "description": "Scope, project plans, and archive documentation.",
+      "order": 0
+    },
+    {
+      "id": "01-stakeholders",
+      "title": "Stakeholder research",
+      "description": "Interview records, stakeholder maps, and research questions.",
+      "order": 1
+    },
+    {
+      "id": "02-materials",
+      "title": "Materials and chemistry",
+      "description": "Candidate materials, reaction pathways, and literature notes.",
+      "order": 2
+    },
+    {
+      "id": "03-experiments",
+      "title": "Experiments and data",
+      "description": "Test procedures, measurements, spreadsheets, and figures.",
+      "order": 3
+    },
+    {
+      "id": "04-presentations",
+      "title": "Presentations",
+      "description": "Pitch decks, posters, and progress presentations.",
+      "order": 4
+    }
+  ],
+  "records": [
+    {
+      "id": "using-the-archive",
+      "section": "00-project-overview",
+      "title": "Using the archive",
+      "created": "2026-10-26",
+      "description": "An instructional entry explaining browsing, previews, and the contributor workflow. This is archive documentation, not a research result.",
+      "researchers": [],
+      "tags": [
+        "archive guide",
+        "documentation"
+      ],
+      "file": {
+        "path": "archive-content/00-project-overview/using-the-archive.txt",
+        "name": "using-the-archive.txt",
+        "extension": "txt",
+        "bytes": 958,
+        "sha256": "7be39f27e5078f6d118272c43c331a19fa03ab67b3e74b302b736e406090991e"
+      }
+    }
+  ]
+}

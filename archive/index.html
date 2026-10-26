@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Kojin Labs research archive. Browse project records, data, figures, and presentations.">
+  <meta name="theme-color" content="#102b43">
+  <title>Research archive · Kojin Labs</title>
+  <link rel="icon" type="image/svg+xml" href="../Icon.svg">
+  <link rel="stylesheet" href="archive.css">
+  <script src="archive.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#catalog">Skip to archive</a>
+  <header class="archive-header">
+    <a class="archive-brand" href="../"><img src="../Icon.svg" width="40" height="40" alt=""><span>KOJIN LABS<small>RESEARCH ARCHIVE</small></span></a>
+    <nav aria-label="Main navigation"><a href="../">Research home</a><a href="./" aria-current="page">Archive</a></nav>
+  </header>
+  <main>
+    <div class="archive-intro"><p class="eyebrow">THE PROJECT RECORD</p><h1>Research, kept in view.</h1><p>Notes, evidence, and work in progress from Kojin Labs. Browse by project area or search the collection.</p></div>
+    <div class="archive-layout" id="archive-layout">
+      <div class="catalog" id="catalog">
+        <div class="catalog-tools">
+          <label class="search-label" for="archive-search">Search the archive</label>
+          <div class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input id="archive-search" type="search" autocomplete="off" placeholder="Title, researcher, topic…"><button id="clear-search" type="button" aria-label="Clear search" hidden>×</button></div>
+          <div class="catalog-controls"><label for="file-type">File type <select id="file-type"><option value="all">All files</option><option value="pdf">PDFs</option><option value="spreadsheet">Spreadsheets</option><option value="presentation">Presentations</option><option value="document">Documents and notes</option><option value="image">Figures and images</option><option value="other">Other files</option></select></label><span id="result-count" role="status" aria-live="polite">Loading records…</span></div>
+        </div>
+        <p class="catalog-status" id="catalog-status" role="status">Loading the archive…</p>
+        <div class="sections" id="sections"></div>
+        <noscript><p>Enable JavaScript to search and preview the archive. Files are also available in the <a href="https://github.com/JoeMusashi9999/Kojin-Labs/tree/main/archive-content">GitHub archive folder</a>.</p></noscript>
+      </div>
+      <aside class="viewer" id="viewer" aria-labelledby="record-title" hidden>
+        <div class="viewer-top"><span class="eyebrow">SELECTED RECORD</span><button class="close-button" id="close-record" type="button">Close <span aria-hidden="true">×</span></button></div>
+        <h2 id="record-title" tabindex="-1"></h2>
+        <p class="record-description" id="record-description"></p>
+        <dl class="record-metadata" id="record-metadata"></dl>
+        <div class="record-actions"><a class="primary-action" id="download-record" download>Download original</a><a id="github-record" target="_blank" rel="noopener" hidden>View commit copy</a><a id="source-record" target="_blank" rel="noopener" hidden>Original source</a></div>
+        <p class="version-note" id="version-note" hidden></p>
+        <div class="preview-shell" id="preview-shell" aria-live="polite"></div>
+        <details class="integrity"><summary>File identity</summary><p>SHA-256 of the archived original</p><code id="record-hash"></code><p id="archive-revision"></p></details>
+      </aside>
+    </div>
+  </main>
+  <footer><span>Kojin Labs · Georgia Tech Grand Challenges student project</span><span>Public records. Published versions stay in the collection.</span></footer>
+</body>
+</html>

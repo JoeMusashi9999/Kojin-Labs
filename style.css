@@ -94,6 +94,11 @@ nav {
   font-size:14px
 }
 
+.site-nav {
+  flex-wrap:wrap;
+  row-gap:8px
+}
+
 nav a {
   text-decoration:none
 }

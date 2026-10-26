@@ -219,7 +219,7 @@
     $("record-description").textContent = record.description;
     $("record-metadata").replaceChildren();
     addMetadata("Created", date(record.created));
-    addMetadata("Researchers", record.researchers.join(", ") || "No researcher credits (archive documentation)");
+    addMetadata("Researchers", record.researchers.join(", ") || "Not specified");
     addMetadata("File", `${record.file.name} · ${size(record.file.bytes)}`);
     addMetadata("Topics", record.tags.join(", ") || "None listed");
     const download = $("download-record");

@@ -5,7 +5,6 @@ import datetime as dt
 import hashlib
 import json
 import re
-import subprocess
 from pathlib import Path
 from urllib.parse import quote, urlparse
 
@@ -91,7 +90,7 @@ def build_manifest(root, repository='', revision=''):
         file_path = sidecar.with_name(sidecar.name[:-len('.meta.json')])
         asset = descriptor(file_path, root)
         record_id = string(data.get('id'), str(sidecar), 100)
-        require(re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', record_id), f'{sidecar}: invalid id')
+        require(re.fullmatch(r'[a-z0-9]+(?:[-_][a-z0-9]+)*', record_id), f'{sidecar}: invalid id')
         created = data.get('created')
         require(isinstance(created, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', created),
                 f'{sidecar}: created must be YYYY-MM-DD')
@@ -141,47 +140,16 @@ def build_manifest(root, repository='', revision=''):
     return {'schema_version': 1, 'revision': revision or None, 'sections': sections, 'records': records}
 
 
-def check_append_only(repository_root, base):
-    """A published file is never edited, renamed, or deleted. New names are fine."""
-    require(re.fullmatch(r'[0-9a-fA-F]{40}', base or ''), 'Base revision must be a full Git SHA')
-    def tree(revision):
-        output = subprocess.check_output(['git', 'ls-tree', '-r', '-z', revision,
-                                          '--', 'archive-content/'], cwd=repository_root)
-        result = {}
-        for entry in output.split(b'\0'):
-            if entry:
-                metadata, path = entry.split(b'\t', 1)
-                result[path.decode('utf-8')] = metadata.split()[2].decode('ascii')
-        return result
-    # First-parent history follows published main snapshots, not intermediate PR
-    # edits. Remember the first published blob for every path, even if a failed
-    # push later edited or deleted it. A later unrelated push cannot bypass this.
-    commits = subprocess.check_output(['git', 'log', '--first-parent', '--reverse',
-                                      '--format=%H', base, '--', 'archive-content/'],
-                                     cwd=repository_root).decode().splitlines()
-    frozen = {}
-    for commit in commits:
-        for path, blob in tree(commit).items():
-            frozen.setdefault(path, blob)
-    current = tree('HEAD')
-    violations = [path for path, blob in frozen.items() if current.get(path) != blob]
-    require(not violations, 'Archive is append-only. Add a new version instead:\n' + '\n'.join(violations))
-
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--output', type=Path)
-    parser.add_argument('--base', default='')
     parser.add_argument('--repository', default='JoeMusashi9999/Kojin-Labs')
     parser.add_argument('--revision', default='')
     args = parser.parse_args()
     root = args.root.resolve()
     require(re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', args.repository), 'Invalid repository')
     require(not args.revision or re.fullmatch(r'[0-9a-fA-F]{40}', args.revision), 'Invalid revision')
-    if args.base and set(args.base) != {'0'}:
-        check_append_only(root, args.base)
     manifest = build_manifest(root / 'archive-content', args.repository, args.revision)
     output = args.output or root / 'archive' / 'manifest.json'
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -192,5 +160,5 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (ValueError, OSError, subprocess.CalledProcessError) as error:
+    except (ValueError, OSError) as error:
         raise SystemExit(f'Archive validation failed: {error}')

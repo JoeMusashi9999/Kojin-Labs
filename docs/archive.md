@@ -33,8 +33,7 @@ Each section contains `_section.json`:
 Folder names define organization, while `title` defines the visible heading.
 All sections appear in one continuous catalog. There is no folder drill-down.
 To add a new area, create a new subfolder and its `_section.json`. A nested area
-is also possible, provided it has its own section file. Treat a published section
-file as permanent, just like the records within it.
+is also possible, provided it has its own section file. GitHub collaborators can rename or update section files and folders.
 
 ## Add a record
 
@@ -68,7 +67,7 @@ publication commit. Researcher credits are supplied by contributors, not inferre
 from the Git author. The list may be empty for administrative documentation.
 
 Optional fields: `tags`, `preview`, `supersedes`, and `source_url`.
-Use a globally unique lowercase ID with hyphens. A `preview` must name a PDF
+Use a globally unique lowercase ID with hyphens or underscores. A `preview` must name a PDF
 in the same folder. It does not need another metadata sidecar unless you also
 want it to appear as its own record.
 
@@ -94,43 +93,32 @@ Authors control the archive files. Publish only material cleared for public
 release, including consent for any interview notes. This repository and the
 archive are public; there is no private or embargoed-record setting.
 
-## Revisions and immutability
+## Editing, renaming, and deleting records
 
-After publication, add a new file and metadata instead of overwriting an entry:
+The public website is read-only. People with GitHub write access can change
+archive contents through normal commits and pull requests. There is no append-only
+history check. GitHub repository permissions control who can publish changes.
 
-```json
-{
-  "id": "breakthrough-v2",
-  "title": "Breakthrough test, corrected analysis",
-  "created": "2027-02-19",
-  "description": "Corrects the calibration used in the first analysis.",
-  "researchers": ["Derek", "Shohom"],
-  "tags": ["formaldehyde", "correction"],
-  "supersedes": "breakthrough-v1"
-}
-```
+- Edit an original or its metadata directly. The next build refreshes its preview,
+  description, checksum, and publication commit link. Keep its `id` unchanged to
+  preserve links to the record.
+- Rename the original and its metadata together. For example, `report.pdf` and
+  `report.pdf.meta.json` become `proposal.pdf` and `proposal.pdf.meta.json`.
+- If a preview PDF is renamed, update the `preview` filename in the metadata.
+- Delete the original and its metadata together. Delete any PDF preview that is
+  no longer referenced, and update records that used `supersedes` to reference
+  the deleted record.
+- Move an original and its metadata into another section folder to reorganize it.
 
-Both records remain visible, with links between versions. Each original and PDF
-preview has a generated SHA-256 checksum. Published records link to a GitHub copy
-at the exact publication commit rather than a moving branch URL.
+For optional separate versions, add a new record with a new ID and set
+`"supersedes": "previous-record-id"`. Both versions appear while both files remain
+in the repository. Separate versions are optional, not required for a correction.
 
-The validator remembers the first archived file blobs in the main branch's
-first-parent history. It rejects modifications, renames, and deletions of those
-published paths, including changes from an earlier failed push. Intermediate
-changes to newly added files on a PR branch are allowed before first publication.
-Do not merge feature branches containing unrelated published-file changes.
-
-**This is a read-only, append-only publishing workflow, not tamper-proof storage.**
-A repository administrator can change the workflow, rewrite history, or delete
-the repository. For stronger enforcement, configure a branch ruleset requiring
-pull requests, the `Archive checks / validate` status check, and no force pushes
-or branch deletion. Those account settings are not changed by this implementation.
-For legally required retention or permanent scholarly records, use a dedicated
-retention service or repository such as an institutional archive.
-
-A mistaken overwrite can be fixed by restoring the exact original bytes and
-adding a separately named corrected version. Never bypass validation just to
-make a deployment pass.
+Metadata validation still rejects missing files, malformed metadata, duplicate
+IDs, unsafe paths, orphan files, and broken or cyclic revision references.
+Each build generates SHA-256 checksums and links to its exact source commit.
+These identify a snapshot; they do not prevent collaborators from changing it.
+GitHub history may retain old versions of edited or deleted files.
 
 ## Google Drive
 
@@ -142,16 +130,15 @@ Recommended starting workflow:
 2. Export a snapshot: PDF for reading, plus XLSX/PPTX/DOCX when useful.
 3. Place exports under `archive-content/` with the metadata sidecar.
 4. Optionally put the original HTTPS Drive link in `source_url`. It is a
-   convenience link, not the immutable archived record. It keeps Drive's own
+   convenience link, separate from the published snapshot. It keeps Drive's own
    sharing permissions and may ask visitors to sign in.
-5. Publish later revisions as new archive entries.
+5. Update an existing snapshot, or add a separate version when you want to retain both.
 
 Google supports PDF and Office exports for these Workspace file types:
 https://developers.google.com/workspace/drive/api/guides/ref-export-formats
 
 A future one-way importer can export approved files from a specific Drive folder
-and open a GitHub pull request containing the snapshots and metadata. It should
-never replace an existing archived filename. It needs a selected folder,
+and open a GitHub pull request containing the snapshots and metadata. It can add or update entries under `archive-content/`, following team review. It needs a selected folder,
 permission to read it, a mapping from metadata to researcher names, and protected
 server-side credentials. No Drive connection or automatic sync is enabled here.
 Never put a Drive token or service-account key in the public website.

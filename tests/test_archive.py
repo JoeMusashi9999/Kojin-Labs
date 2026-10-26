@@ -1,7 +1,6 @@
-"""Behavioral checks for metadata, path boundaries, and published history."""
+"""Behavioral checks for metadata, path boundaries, and editable records."""
 import importlib.util
 import json
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -87,37 +86,30 @@ class ArchiveTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'cyclic'):
             archive.build_manifest(self.content)
 
-    def git(self, *args):
-        return subprocess.check_output(['git', *args], cwd=self.root, stderr=subprocess.DEVNULL).decode().strip()
+    def test_ids_allow_underscores_without_changing_deep_links(self):
+        self.data['id'] = 'team_charter_team25'
+        self.write_meta()
+        self.assertEqual(archive.build_manifest(self.content)['records'][0]['id'], 'team_charter_team25')
 
-    def commit(self, message):
-        self.git('add', '.')
-        self.git('commit', '-qm', message)
-        return self.git('rev-parse', 'HEAD')
-
-    def test_history_guard_blocks_edits_and_deletes_after_failed_push(self):
-        self.git('init', '-q')
-        self.git('config', 'user.email', 'test@example.org')
-        self.git('config', 'user.name', 'Archive test')
-        base = self.commit('First publication')
-        (self.section / 'v2.txt').write_text('New version')
-        self.commit('New path is allowed')
-        archive.check_append_only(self.root, base)
-        self.file.write_text('Replaced published content')
-        failed = self.commit('Forbidden edit')
-        with self.assertRaisesRegex(ValueError, 'append-only'):
-            archive.check_append_only(self.root, base)
-        (self.root / 'unrelated.txt').write_text('Unrelated commit')
-        self.commit('Follow-up cannot bypass failed validation')
-        with self.assertRaisesRegex(ValueError, 'append-only'):
-            archive.check_append_only(self.root, failed)
-        self.file.write_text('Initial observations')
-        self.commit('Restore the original')
-        archive.check_append_only(self.root, failed)
-        self.file.unlink()
-        self.commit('Deletion fails too')
-        with self.assertRaisesRegex(ValueError, 'append-only'):
-            archive.check_append_only(self.root, base)
+    def test_existing_records_can_be_edited_renamed_and_deleted(self):
+        original = archive.build_manifest(self.content)['records'][0]
+        self.file.write_text('Revised observations')
+        self.data['description'] = 'Updated analysis'
+        self.write_meta()
+        edited = archive.build_manifest(self.content)['records'][0]
+        self.assertNotEqual(edited['file']['sha256'], original['file']['sha256'])
+        self.assertEqual(edited['description'], 'Updated analysis')
+        self.assertEqual(edited['id'], original['id'])
+        renamed = self.section / 'renamed-notes.txt'
+        renamed_meta = self.section / 'renamed-notes.txt.meta.json'
+        self.file.rename(renamed)
+        self.meta.rename(renamed_meta)
+        current = archive.build_manifest(self.content)['records'][0]
+        self.assertEqual(current['file']['name'], 'renamed-notes.txt')
+        self.assertEqual(current['id'], original['id'])
+        renamed.unlink()
+        renamed_meta.unlink()
+        self.assertEqual(archive.build_manifest(self.content)['records'], [])
 
 
 if __name__ == '__main__':
